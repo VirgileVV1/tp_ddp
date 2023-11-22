@@ -4,25 +4,91 @@
 #include <iostream>
 #include <deque>
 
-
-
 struct Point
 {
     int x;
     int y;
 
-    Point()
+    Point() 
     {
+        x = 0; 
+        y = 0; 
     }
+
     Point(int _x, int _y)
     {
         x = _x;
         y = _y;
     }
-    ~Point()
+
+    ~Point(){}
+};
+
+
+
+// Classe representant la carte
+class Map 
+{
+private:
+    // l'objet map est un pointeur vers un deque a 2 dimension contenant des Point
+    std::shared_ptr<std::deque<std::deque<Point>>> tableau;
+
+public:  
+
+    Map(unsigned int n)
+    {
+        init(n);
+    }
+
+    Map()
+    {
+    }
+
+    ~Map()
     {}
 
+    void init(unsigned int n)
+    {
+        tableau = std::make_shared<std::deque<std::deque<Point>>>();
+
+        std::deque<Point> td;
+        Point p;
+
+        for (unsigned int i = 0; i < n; i++)
+        {
+            td.clear();
+            for (unsigned int j = 0; j < n; j++)
+            {
+                p.x = i;
+                p.y = j;
+                td.push_back(p);
+            }
+            tableau->push_back(td);
+        }
+    }
+
+    void destroyMap()
+    {
+        // detruir la map
+        
+    }
+
+    void print()
+    {
+        for (auto ligne : *tableau)
+        {
+            for (auto val : ligne)
+            {
+                std::cout << val.x << "/" << val.y << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
+
+
 };
+
 
 void printDeque(std::deque<std::deque<Point>> *d)
 {
@@ -35,8 +101,6 @@ void printDeque(std::deque<std::deque<Point>> *d)
         std::cout << std::endl;
     }
 }
-
-std::deque<std::deque<Point>> tdd;
 
 
 void initDeque(int n, std::deque<std::deque<Point>> * ptdd)
@@ -114,15 +178,23 @@ void addSouth(std::deque<std::deque<Point>>* ptdd)
 
 int main()
 {
-    std::deque<std::deque<Point>> tdd;
-    std::deque<std::deque<Point>> * ptdd;
-    ptdd = &tdd;
-    initDeque(9, ptdd);
-    addNorth(ptdd);
-    addEast(ptdd);
-    addWest(ptdd);
-    addSouth(ptdd);
-    printDeque(ptdd);
+    //std::deque<std::deque<Point>> tdd;
+    //std::deque<std::deque<Point>> * ptdd;
+
+    unsigned int n = 9;
+    Map m(n);
+    m.print();
+
+    
+    //Map::printMap();
+
+    //ptdd = &tdd;
+    //initDeque(9, ptdd);
+    //addNorth(ptdd);
+    //addEast(ptdd);
+    //addWest(ptdd);
+    //addSouth(ptdd);
+    //printDeque(ptdd);
 
 
 

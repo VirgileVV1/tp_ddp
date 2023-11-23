@@ -79,7 +79,7 @@ public:
         {
             for (auto val : ligne)
             {
-                std::cout << val.x << "/" << val.y << " ";
+                std::cout << val.x << "/" << val.y << "\t";
             }
             std::cout << std::endl;
         }
@@ -87,119 +87,97 @@ public:
 
 
 
+    /**
+    * ajoute une ligne avant la première ligne de la carte 
+    */
+    void addNorth()
+    {
+        std::deque<Point> td;
+        Point p;
+
+        for (int i = 0; i < tableau->at(0).size(); i++)
+        {
+            p.x = tableau->at(0).at(0).x - 1;
+            p.y = i;
+            td.push_back(p);
+        }
+
+        tableau->push_front(td);
+    }
+
+    /**
+    * ajoute une ligne apres la derniere ligne de la carte
+    */
+    void addSouth()
+    {
+        std::deque<Point> td;
+        Point p;
+
+        for (int i = 0; i < tableau->at(0).size(); i++)
+        {
+            p.x = tableau->at(tableau->size() - 1).at(0).x + 1; // Il prend la valeur X + 1 du dernier de la ligne i
+            p.y = tableau->at(tableau->size() - 1).at(i).y; // Il prend la valeur Y du dernier  de la ligne i
+            td.push_back(p);
+        }
+
+        tableau->push_back(td);
+    }
+
+    /**
+    * ajoute une colonne apres la derniere colonne de la carte
+    */
+    void addEast()
+    {
+        std::deque<Point> td;
+        Point p;
+
+        for (int i = 0; i < tableau->size(); i++)
+        {
+            p.x = tableau->at(i).at(0).x; // On lui donne la valeur X de son voisin en debut de ligne
+            p.y = tableau->at(i).at(tableau->at(i).size() - 1).y + 1; // On lui donne la valeur Y de son voisin direct (fin de ligne)
+            tableau->at(i).push_back(p);
+        }
+    }
+
+    /**
+    * ajoute une colonne avant la premiere colonne de la carte
+    */
+    void addWest()
+    {
+        std::deque<Point> td;
+        Point p;
+
+        for (int i = 0; i < tableau->size(); i++)
+        {
+            p.x = tableau->at(i).at(0).x; // Il prend la valeur X du premier de la ligne
+            p.y = tableau->at(i).at(0).y - 1; // Il prend la valeur Y - 1 du premier de la ligne
+            tableau->at(i).push_front(p);
+        }
+    }
 };
 
 
-void printDeque(std::deque<std::deque<Point>> *d)
-{
-    for (auto ligne : *d)
-    {
-        for (auto val : ligne)
-        {
-            std::cout << val.x << "/" << val.y << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-
-void initDeque(int n, std::deque<std::deque<Point>> * ptdd)
-{
-    std::deque<Point> td;
-    Point p;
-
-    for (int i = 0; i < n; i++)
-    {
-         td.clear();
-         for (int j = 0; j < n; j++)
-         {
-             p.x = i;
-             p.y = j;
-             td.push_back(p);
-         }
-         ptdd->push_back(td);
-    }
-}
-
-void addNorth(std::deque<std::deque<Point>>* ptdd)
-{
-    std::deque<Point> td;
-    Point p;
-    int val = ptdd->at(0).at(0).x;
-
-    for (int i = 0; i < ptdd->size(); i++)
-    {
-      
-        p.x = val-1;
-        p.y = i;
-        td.push_back(p);
-    }
-    ptdd->push_front(td);
-
-}
-void addEast(std::deque<std::deque<Point>>* ptdd)
-{
-    std::deque<Point> td;
-    Point p;
-    int valY;
-    for (int i = 0; i < ptdd->size(); i++)
-    {
-        valY = ptdd->at(i).at(ptdd->at(i).size()-1).y; // On lui donne la valeur Y de son voisin direct
-        p.x = ptdd->at(i).at(0).x; // On lui donne la valeur X de son voisin en debut de ligne
-        p.y = valY + 1;
-        ptdd->at(i).push_back(p);
-    }
-}
-
-void addWest(std::deque<std::deque<Point>>* ptdd)
-{
-    std::deque<Point> td;
-    Point p;
-    for (int i = 0; i < ptdd->size(); i++)
-    {
-        p.x = ptdd->at(i).at(0).x; // Il prend la valeur X du premier de la ligne
-        p.y = ptdd->at(i).at(0).y - 1; // Il prend la valeur Y - 1 du premier de la ligne
-        ptdd->at(i).push_front(p);
-    }
-}
-
-void addSouth(std::deque<std::deque<Point>>* ptdd)
-{
-    std::deque<Point> td;
-    Point p;
-    for (int i = 0; i < ptdd->at(0).size(); i++)
-    {
-        p.x = ptdd->at(ptdd->size()-1).at(0).x +1; // Il prend la valeur X + 1 du dernier element de la ligne i
-        p.y = ptdd->at(ptdd->size() - 1).at(i).y ; // Il prend la valeur en Y du dernier element  de la ligne i
-        td.push_back(p);
-    }
-    ptdd->push_back(td);
-}
 
 int main()
 {
-    //std::deque<std::deque<Point>> tdd;
-    //std::deque<std::deque<Point>> * ptdd;
 
     unsigned int n = 9;
     Map m(n);
+
+    /*m.addNorth();
+    m.addNorth();
+    m.addSouth();
+    m.addSouth();
+    m.addEast();
+    m.addEast();
+    m.addWest();
+    m.addWest();*/
+
+    Point p1(-2,-2);
+
     m.print();
 
-    
+  
     //Map::printMap();
-
-    //ptdd = &tdd;
-    //initDeque(9, ptdd);
-    //addNorth(ptdd);
-    //addEast(ptdd);
-    //addWest(ptdd);
-    //addSouth(ptdd);
-    //printDeque(ptdd);
-
-
-
-
-
-
 
 }
